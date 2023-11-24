@@ -3,7 +3,9 @@ import {
   View,
   StyleSheet,
   useColorScheme,
+  SafeAreaView,
   ScrollView,
+  StatusBar,
   Text,
   Button,
 } from 'react-native';
@@ -19,18 +21,24 @@ function HomeScreen() {
   };
 
   return (
-    <ScrollView
-      contentInsetAdjustmentBehavior="automatic"
-      style={backgroundStyle}>
-      <View style={styles.container}>
-        <Text style={styles.header}>Navigation Pane</Text>
-        <Button
-          title="Register"
-          onPress={() => navigation.navigate('Register')}
-        />
-        <Button title="Login" onPress={() => navigation.navigate('Login')} />
-      </View>
-    </ScrollView>
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <View style={styles.container}>
+          <Text style={styles.header}>Navigation Pane</Text>
+          <Button
+            title="Register"
+            onPress={() => navigation.navigate('Register')}
+          />
+          <Button title="Login" onPress={() => navigation.navigate('Login')} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
