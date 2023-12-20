@@ -11,9 +11,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import {useNavigation} from '@react-navigation/native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-function RegisterScreen(): JSX.Element {
+function RegisterScreen() {
+  const navigation = useNavigation();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -70,7 +73,7 @@ function RegisterScreen(): JSX.Element {
           <TouchableOpacity style={styles.button} onPress={handleSignUp}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate}>
             <Text style={styles.signInText}>
               Already have an account? Sign in
             </Text>

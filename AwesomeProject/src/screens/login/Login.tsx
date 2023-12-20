@@ -37,7 +37,7 @@ function LoginScreen(): JSX.Element {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <View style={styles.container}>
-          <Text style={styles.header}>Sign Up</Text>
+          <Text style={styles.header}>Sign In</Text>
           <TextInput
             style={styles.input}
             placeholder="Email"

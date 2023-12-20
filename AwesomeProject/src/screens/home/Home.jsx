@@ -7,7 +7,7 @@ import {
   ScrollView,
   StatusBar,
   Text,
-  Button,
+  TouchableOpacity,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {useNavigation} from '@react-navigation/native';
@@ -31,11 +31,26 @@ function HomeScreen() {
         style={backgroundStyle}>
         <View style={styles.container}>
           <Text style={styles.header}>Navigation Pane</Text>
-          <Button
-            title="Register"
-            onPress={() => navigation.navigate('Register')}
-          />
-          <Button title="Login" onPress={() => navigation.navigate('Login')} />
+          <View style={styles.buttoncontainer}>
+            <TouchableOpacity
+              style={styles.button}
+              title="Register"
+              onPress={() => navigation.navigate('Register')}>
+              <Text style={styles.buttonText}>Register</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              title="Login"
+              onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              title="Profile"
+              onPress={() => navigation.navigate('Profile')}>
+              <Text style={styles.buttonText}>Profile</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -47,8 +62,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    marginTop: 32,
   },
   button: {
     backgroundColor: 'blue',
@@ -65,7 +78,17 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginTop: 10,
+  },
+  buttoncontainer: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 20,
+  },
+  straycontainer: {
+    flex: 1,
+    backgroundColor: 'transparent',
   },
 });
 
