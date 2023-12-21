@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
@@ -62,7 +63,19 @@ function ProfileScreen() {
             </View>
           </ImageBackground>
           <View style={styles.buttoncontainer}>
-            <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
+            <TouchableOpacity
+              onPress={handleButtonPress}
+              style={{
+                backgroundColor: isFollowed ? '#888888' : '#ff8601',
+                borderRadius: 30,
+                paddingHorizontal: 20,
+                paddingVertical: 10,
+                marginVertical: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 60,
+                width: 110,
+              }}>
               <Text style={styles.buttonText}>
                 {isFollowed ? 'Followed' : 'Follow'}
               </Text>
@@ -89,6 +102,19 @@ function ProfileScreen() {
           </View>
           <View style={styles.straycontainer}>
             <Text>Sire Bombastic is a distinguished gentleman.</Text>
+            <Text>Sire Bombastic is a distinguished gentleman.</Text>
+          </View>
+          <View style={styles.straycontainer}>
+            <Text>Sire Bombastic is a distinguished gentleman.</Text>
+            <Text>Sire Bombastic is a distinguished gentleman.</Text>
+          </View>
+          <View style={styles.straycontainer}>
+            <Text>Sire Bombastic is a distinguished gentleman.</Text>
+            <Text>Sire Bombastic is a distinguished gentleman.</Text>
+          </View>
+          <View style={styles.straycontainer}>
+            <Text>Sire Bombastic is a distinguished gentleman.</Text>
+            <Text>Sire Bombastic is a distinguished gentleman.</Text>
           </View>
         </View>
       </ScrollView>
@@ -111,7 +137,7 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   button: {
-    backgroundColor: '#FF8601',
+    backgroundColor: '#888888',
     borderRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -183,6 +209,9 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     resizeMode: 'contain',
+  },
+  followedButton: {
+    backgroundColor: '#FF8601',
   },
 });
 

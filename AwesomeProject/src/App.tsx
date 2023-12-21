@@ -7,17 +7,23 @@ import HomeScreen from './screens/home/Home';
 import RegisterScreen from './screens/register/Register';
 import LoginScreen from './screens/login/Login';
 import ProfileScreen from './screens/profile/Profile';
+import TabScreen from './screens/tab/Tabs';
 
 const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerShown: false,
+        }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Tabs" component={TabScreen} />
         {/* <Stack.Screen
             name="Product Details"
             component={ProductDetailsScreen}
