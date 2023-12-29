@@ -1,4 +1,6 @@
+/* eslint-disable no-alert */
 import React, {useState} from 'react';
+import axios from 'axios';
 import {
   SafeAreaView,
   ScrollView,
@@ -14,6 +16,8 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
+const baseUrl = 'https://reqres.in';
+
 function RegisterScreen() {
   const navigation = useNavigation();
 
@@ -21,9 +25,38 @@ function RegisterScreen() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     console.log('Signing up:', {firstName, lastName, email, password});
+    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+      alert('Name or Email is invalid');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(`${baseUrl}/api/users`, {
+        firstName,
+        lastName,
+        email,
+      });
+
+      if (response.status === 201) {
+        alert(` You have created: ${JSON.stringify(response.data)}`);
+        setIsLoading(false);
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPassword('');
+      } else {
+        throw new Error('An error has occurred');
+      }
+    } catch (error) {
+      alert('An error has occurred');
+      setIsLoading(false);
+    }
   };
 
   const isDarkMode = useColorScheme() === 'dark';
@@ -42,18 +75,26 @@ function RegisterScreen() {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <View style={styles.container}>
-          <Text style={styles.header}>Sign Up</Text>
+          <View>
+            {isLoading ? (
+              <Text style={styles.header}> Signing Up </Text>
+            ) : (
+              <Text style={styles.header}>Sign Up</Text>
+            )}
+          </View>
           <TextInput
             style={styles.input}
             placeholder="First Name"
             value={firstName}
             onChangeText={text => setFirstName(text)}
+            editable={!isLoading}
           />
           <TextInput
             style={styles.input}
             placeholder="Last Name"
             value={lastName}
             onChangeText={text => setLastName(text)}
+            editable={!isLoading}
           />
           <TextInput
             style={styles.input}
@@ -62,18 +103,23 @@ function RegisterScreen() {
             onChangeText={text => setEmail(text)}
             keyboardType="email-address"
             autoCapitalize="none"
+            editable={!isLoading}
           />
           <TextInput
             style={styles.input}
             placeholder="Password"
             value={password}
             onChangeText={text => setPassword(text)}
+            editable={!isLoading}
             secureTextEntry
           />
-          <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSignUp}
+            disabled={isLoading}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate}>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={styles.signInText}>
               Already have an account? Sign in
             </Text>

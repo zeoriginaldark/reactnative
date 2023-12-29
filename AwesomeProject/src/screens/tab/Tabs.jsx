@@ -2,6 +2,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,10 +30,33 @@ function ProfileScreen() {
   );
 }
 
+const TabBarIcon = ({route, focused, color, size}) => {
+  let iconName;
+
+  if (route.name === 'Register') {
+    iconName = focused ? 'menu' : 'menu-open';
+  } else if (route.name === 'Login') {
+    iconName = focused ? 'login' : 'login-variant';
+  } else if (route.name === 'Profile') {
+    iconName = focused ? 'face' : 'face-outline';
+  }
+
+  return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+};
+
 function TabScreen() {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          <TabBarIcon
+            route={route}
+            focused={focused}
+            color={color}
+            size={size}
+          />;
+        },
+
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
       })}>
