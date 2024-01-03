@@ -8,6 +8,7 @@ import RegisterScreen from './screens/register/Register';
 import LoginScreen from './screens/login/Login';
 import ProfileScreen from './screens/profile/Profile';
 import TabScreen from './screens/tab/Tabs';
+import ProductsScreen from './screens/products/Products';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +29,7 @@ function App(): JSX.Element {
             name="Product Details"
             component={ProductDetailsScreen}
           /> */}
-        {/* <Stack.Screen name="Products" component={ProductsScreen} /> */}
+        <Stack.Screen name="Products" component={ProductsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

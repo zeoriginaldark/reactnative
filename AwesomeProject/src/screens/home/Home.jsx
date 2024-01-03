@@ -56,6 +56,12 @@ function HomeScreen() {
               onPress={() => navigation.navigate('Tabs')}>
               <Text style={styles.buttonText}>Tabs</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              title="Profile"
+              onPress={() => navigation.navigate('Products')}>
+              <Text style={styles.buttonText}>Products</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
