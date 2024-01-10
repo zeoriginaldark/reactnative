@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {
   SafeAreaView,
-  ScrollView,
+  //ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -25,13 +25,41 @@ function ProductsScreen() {
     try {
       const response = await axios.get('https://dummyjson.com/products');
       const {products: newProducts, total, limit} = response.data;
-      setProducts(prevProducts => [...prevProducts, ...newProducts]);
       setTotalPages(Math.ceil(total / limit));
+      setProducts(prevProducts => [...prevProducts, ...newProducts]);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
-    } finally {
       setLoading(false);
     }
+  };
+
+  const renderFooter = () => {
+    if (loading) {
+      return <ActivityIndicator size="large" color="#0000ff" />;
+    }
+    return null;
+  };
+
+  // eslint-disable-next-line react/no-unstable-nested-components
+  const ItemSeparatorView = () => {
+    return (
+      // Flat List Item Separator
+      <View
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          height: 0.5,
+          width: '100%',
+          backgroundColor: '#C8C8C8',
+        }}
+      />
+    );
+  };
+
+  const getItem = item => {
+    //Function for click on an item
+    // eslint-disable-next-line no-alert
+    alert('Id : ' + item.id + ' Title : ' + item.title);
   };
 
   useEffect(() => {
@@ -41,10 +69,12 @@ function ProductsScreen() {
   const renderItem = ({item}) => {
     // Render each product item here
     return (
-      <View>
-        <Text>{item.title}</Text>
-        {/* Render other product details */}
-      </View>
+      // Flat List Item
+      <Text style={styles.itemStyle} onPress={() => getItem(item)}>
+        {item.id}
+        {'.'}
+        {item.title}
+      </Text>
     );
   };
 
@@ -66,44 +96,28 @@ function ProductsScreen() {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View style={styles.container}>
-          {loading ? (
-            <ActivityIndicator size="large" color="#0000ff" />
-          ) : (
+      <View style={styles.container} contentInsetAdjustmentBehavior="automatic">
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <>
             <FlatList
               data={products}
               renderItem={renderItem}
               keyExtractor={item => item.id.toString()}
+              ItemSeparatorComponent={ItemSeparatorView}
               onEndReached={handleLoadMore}
-              onEndReachedThreshold={0.1}
+              onEndReachedThreshold={0.2}
+              ListFooterComponent={renderFooter}
             />
-          )}
-        </View>
-      </ScrollView>
+          </>
+        )}
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -111,34 +125,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     marginTop: 32,
   },
-  input: {
-    height: 40,
-    width: '100%',
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  signInText: {
-    marginTop: 20,
-    color: 'blue',
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  itemStyle: {
+    padding: 20,
+    fontSize: 16,
+    color: 'black', // Adjust as needed
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    backgroundColor: 'white',
   },
 });
 
