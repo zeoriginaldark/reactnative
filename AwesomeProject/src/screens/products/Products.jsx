@@ -7,14 +7,24 @@ import {
   Text,
   useColorScheme,
   View,
-  FlatList,
+  SectionList,
   ActivityIndicator,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
+const MemoizedProductItem = React.memo(({item, onPress}) => {
+  return (
+    <View>
+      <Text style={styles.taskItem} onPress={() => onPress(item)}>
+        {item.title}
+      </Text>
+    </View>
+  );
+});
+
 function ProductsScreen() {
-  const [products, setProducts] = useState([]);
+  const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -24,7 +34,14 @@ function ProductsScreen() {
     try {
       const response = await axios.get('https://dummyjson.com/products');
       const {products: newProducts, total, limit} = response.data;
-      setProducts(prevProducts => [...prevProducts, ...newProducts]);
+      const newSections = [
+        {
+          title: 'Products', // You can customize this header
+          data: newProducts,
+        },
+      ];
+
+      setSections(prevSections => [...prevSections, ...newSections]);
       setTotalPages(Math.ceil(total / limit));
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -44,6 +61,12 @@ function ProductsScreen() {
     return null;
   };
 
+  const renderSectionHeader = ({section: {title}}) => (
+    <View>
+      <Text style={styles.taskTitle}>{title}</Text>
+    </View>
+  );
+
   // eslint-disable-next-line react/no-unstable-nested-components
   const ItemSeparatorView = () => {
     return (
@@ -60,11 +83,7 @@ function ProductsScreen() {
 
   const renderItem = ({item}) => {
     // Render each product item here
-    return (
-      <View>
-        <Text onPress={() => getItem(item)}>{item.title}</Text>
-      </View>
-    );
+    return <MemoizedProductItem item={item} onPress={getItem} />;
   };
 
   const handleLoadMore = () => {
@@ -89,14 +108,16 @@ function ProductsScreen() {
         {loading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
-          <FlatList
-            data={products}
+          <SectionList
+            sections={sections}
+            keyExtractor={(item, index) => item.id.toString() + index}
             renderItem={renderItem}
-            keyExtractor={item => item.id.toString()}
+            renderSectionHeader={renderSectionHeader}
             ItemSeparatorComponent={ItemSeparatorView}
             onEndReached={handleLoadMore}
             onEndReachedThreshold={0.1}
             ListFooterComponent={renderFooter}
+            stickySectionHeadersEnabled
           />
         )}
       </View>
@@ -106,11 +127,10 @@ function ProductsScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
     marginTop: 32,
+    backgroundColor: '#eafffe',
   },
   itemStyle: {
     padding: 20,
@@ -125,6 +145,21 @@ const styles = StyleSheet.create({
     height: 0.5,
     width: '100%',
     backgroundColor: '#C8C8C8',
+  },
+  taskItem: {
+    padding: 10,
+    marginVertical: 15,
+    fontSize: 16,
+  },
+  taskTitle: {
+    backgroundColor: '#ffffff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    padding: 10,
+    elevation: 4,
+    margin: 10,
+    marginBottom: 0,
+    borderRadius: 10,
   },
 });
 
