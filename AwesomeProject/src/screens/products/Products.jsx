@@ -24,14 +24,15 @@ function ProductsScreen() {
     try {
       const response = await axios.get('https://dummyjson.com/products');
       const {products: newProducts, total, limit} = response.data;
-      setTotalPages(Math.ceil(total / limit));
       setProducts(prevProducts => [...prevProducts, ...newProducts]);
-      setLoading(false);
+      setTotalPages(Math.ceil(total / limit));
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchProducts();
   }, [page]);
@@ -54,15 +55,14 @@ function ProductsScreen() {
   const getItem = item => {
     //Function for click on an item
     // eslint-disable-next-line no-alert
-    alert(' Title : ' + item.title);
+    alert('Id : ' + item.id + ' Title : ' + item.title);
   };
 
   const renderItem = ({item}) => {
     // Render each product item here
     return (
       <View>
-        <Text>{item.title}</Text>
-        {/* Render other product details */}
+        <Text onPress={() => getItem(item)}>{item.title}</Text>
       </View>
     );
   };
@@ -85,23 +85,21 @@ function ProductsScreen() {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View style={styles.container}>
-          {loading ? (
-            <ActivityIndicator size="large" color="#0000ff" />
-          ) : (
-            <FlatList
-              data={products}
-              renderItem={renderItem}
-              keyExtractor={item => item.id.toString()}
-              onEndReached={handleLoadMore}
-              onEndReachedThreshold={0.1}
-            />
-          )}
-        </View>
-      </ScrollView>
+      <View style={styles.container}>
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <FlatList
+            data={products}
+            renderItem={renderItem}
+            keyExtractor={item => item.id.toString()}
+            ItemSeparatorComponent={ItemSeparatorView}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.1}
+            ListFooterComponent={renderFooter}
+          />
+        )}
+      </View>
     </SafeAreaView>
   );
 }
@@ -114,34 +112,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     marginTop: 32,
   },
-  input: {
-    height: 40,
+  itemStyle: {
+    padding: 20,
+    fontSize: 16,
+    color: 'black', // Adjust as needed
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    backgroundColor: 'white',
+  },
+  separator: {
+    height: 0.5,
     width: '100%',
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  signInText: {
-    marginTop: 20,
-    color: 'blue',
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    backgroundColor: '#C8C8C8',
   },
 });
 
