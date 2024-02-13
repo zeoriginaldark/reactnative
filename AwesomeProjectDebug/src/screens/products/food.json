@@ -1,0 +1,86 @@
+[
+  {
+    "rowNumber": 1,
+    "categoryID": 0,
+    "categoryName": null,
+    "categoryDescription": null,
+    "addedOn": "2024-02-07T04:36:45.647",
+    "price": 55,
+    "foodId": 25,
+    "foodName": "ggg",
+    "description": "gggg",
+    "imagePath": "/FoodImage/0259a5b5-f501-414e-90ac-ae0a3e6e0fc8.jpg"
+  },
+  {
+    "rowNumber": 2,
+    "categoryID": 0,
+    "categoryName": null,
+    "categoryDescription": null,
+    "addedOn": "2024-02-06T14:11:18.873",
+    "price": 33,
+    "foodId": 24,
+    "foodName": "sfd",
+    "description": "cdxz",
+    "imagePath": "/FoodImage/628eac3e-f3e7-485d-bfa1-f6b28955e9fd.jpeg"
+  },
+  {
+    "rowNumber": 3,
+    "categoryID": 0,
+    "categoryName": null,
+    "categoryDescription": null,
+    "addedOn": "2024-02-06T14:10:11.197",
+    "price": 33,
+    "foodId": 23,
+    "foodName": "sfd",
+    "description": "cdxz",
+    "imagePath": "/FoodImage/1c79fb56-c633-4f60-8b69-ffa378248fe6.jpeg"
+  },
+  {
+    "rowNumber": 4,
+    "categoryID": 0,
+    "categoryName": "smanes",
+    "categoryDescription": null,
+    "addedOn": "2024-01-31T15:09:41.063",
+    "price": 55,
+    "foodId": 21,
+    "foodName": "Ice Cream",
+    "description": "Hello, I am ice cream, please eat me",
+    "imagePath": ""
+  },
+  {
+    "rowNumber": 5,
+    "categoryID": 0,
+    "categoryName": "namess",
+    "categoryDescription": null,
+    "addedOn": "2024-01-29T09:46:27.323",
+    "price": 55,
+    "foodId": 20,
+    "foodName": "Ice Cream",
+    "description": "Hello, I am ice cream, please eat me",
+    "imagePath": ""
+  },
+  {
+    "rowNumber": 6,
+    "categoryID": 0,
+    "categoryName": "manes",
+    "categoryDescription": null,
+    "addedOn": "2024-01-29T06:40:00.17",
+    "price": 20,
+    "foodId": 19,
+    "foodName": "pizza",
+    "description": "Hello, I am pizza, please eat me",
+    "imagePath": ""
+  },
+  {
+    "rowNumber": 7,
+    "categoryID": 0,
+    "categoryName": "names",
+    "categoryDescription": null,
+    "addedOn": "2024-01-31T15:10:00.64",
+    "price": 55,
+    "foodId": 18,
+    "foodName": "Ice Cream",
+    "description": "Hello, I am ice cream, please eat me",
+    "imagePath": ""
+  }
+]

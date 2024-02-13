@@ -9,77 +9,57 @@ import {
   View,
   SectionList,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-const MemoizedProductItem = React.memo(({ item, onPress }) => {
-  return (
-    <View>
-      <Text style={styles.taskItem} onPress={() => onPress(item)}>
-        {item.foodName}
-      </Text>
-      <Image
-        source={{ uri: item.imagePath }}
-        style={{ width: 100, height: 100 }}
-      />
-    </View>
-  );
-});
+const applyOffsetLimit = (data, offset, limit) => {
+  return data.slice(offset, offset+limit);
+}
 
 function ProductsScreen() {
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
-  const fetchProducts = async () => {
-    setLoading(true);
-    apiUrl = 'http://172.18.19.140:8044/api/Product/GetFood?offset=0&limit=10';
+  const offset = 0;
+  const limit = 10;
+
+  useEffect(() => {
+    fetchData();
+  }, [page]);
+
+  const fetchData = async () => {
     try {
-      const response = await axios.get(apiUrl);
-      const foodData = response.data.map(item => ({
-        title: item.foodName,
-        data: {
-          rowNumber: item.rowNumber,
-          categoryID: item.categoryID,
-          categoryName: item.categoryName,
-          categoryDescription: item.categoryDescription,
-          addedOn: item.addedOn,
-          price: item.price,
-          foodId: item.foodId,
-          description: item.description,
-          imagePath: item.imagePath
-        }
-      }));
-      const newSections = [
-        {
-          title: 'Products', // You can customize this header
-          data: newProducts,
-        },
-      ];
+      setLoading(true);
+      // const responsed = await axios.get('http://172.18.19.140:8044/api/Product/GetFood?offset=0&limit=10');
+      // const responsed = await axios.get(`http://172.18.19.140:8044/api/Product/GetFoodCategory?offset=${(page - 1) * 10}&limit=10`);
+      const responsed = require('./food.json');
+      const response = applyOffsetLimit(responsed, offset, limit);
 
-      setSections(prevSections => [...prevSections, ...newSections]);
-      setTotalPages(Math.ceil(total / limit));
+      const newData = response;
+      if (newData.length === 0) {
+        // No more data available
+        console.log('No more data available.');
+        return;
+      }
+      console.log('API Response:', response);
+
+      const transformedSections = transformData(newData);
+      console.log('Transformed Sections:', transformedSections);
+      setSections(transformedSections);
+
+      // setSections(prevSections => [...prevSections, ...transformedSections]);
+
     } catch (error) {
-      console.error('Error fetching food data:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, [page]);
-
-  const renderFooter = () => {
-    if (loading) {
-      return <ActivityIndicator size="large" color="#0000ff" />;
-    }
-    return null;
-  };
-
-  const renderSectionHeader = ({section: {title}}) => (
+  const renderSectionHeader = ({ section: { title } }) => (
     <View>
       <Text style={styles.taskTitle}>{title}</Text>
     </View>
@@ -87,26 +67,32 @@ function ProductsScreen() {
 
   const ItemSeparatorView = () => {
     return (
-      // Flat List Item Separator
       <View style={styles.separator} />
     );
   };
 
-  const getItem = (item) => {
-    //Function for click on an item
-    alert('Id : ' + item.foodId + ' Title : ' + item.foodName);
-  };
+  const renderItem = ({ item: { foodName, description, price } }) => (
+    <View style={styles.itemContainer}>
+          <View style={styles.itemContainer}>
+            {/* <Image source={{ uri: imagePath }} style={styles.itemImage} /> */}
+            <View>
+              <Text>{foodName}</Text>
+              <Text>{description}</Text>
+              <Text>${price}</Text>
+            </View>
+          </View>
+    </View>
+  );
 
-  const renderItem = ({item}) => {
-    // Render each product item here
-    return <MemoizedProductItem item={item} onPress={getItem} />;
-  };
+  const renderFooter =()=>{
+    if (!loading) return null;
 
-  const handleLoadMore = () => {
-    if (page < totalPages) {
-      setPage(page + 1);
-    }
-  };
+    return(
+      <View style={styles.separator}>
+        <ActivityIndicator animating size={'large'}/>
+      </View>
+    );
+  }
 
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -125,15 +111,19 @@ function ProductsScreen() {
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <SectionList
-            sections={[{title: 'Food List', sections}]}
-            keyExtractor={(item, index) => item.foodId.toString() + index}
-            renderItem={renderItem}
+            sections={sections}
+            keyExtractor={(item, index) => item.foodId.toString() + index.toString()}
             renderSectionHeader={renderSectionHeader}
             ItemSeparatorComponent={ItemSeparatorView}
-            onEndReached={handleLoadMore}
-            onEndReachedThreshold={0.1}
             ListFooterComponent={renderFooter}
-            stickySectionHeadersEnabled
+            onEndReachedThreshold={0.1}
+            onEndReached={()=>{
+              if (!loading){
+                setPage(prevPage=> prevPage+1);
+              }
+            }}
+            renderItem={renderItem}
+            //stickySectionHeadersEnabled
           />
         )}
       </View>
@@ -141,41 +131,63 @@ function ProductsScreen() {
   );
 }
 
+const transformData = (data) => {
+  const groupedData = data.reduce((acc, item) => {
+    const category = item.categoryName || 'Uncategorized';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(item);
+    return acc;
+  }, {});
+
+  const sections = Object.entries(groupedData).map(([title, data]) => ({
+    title,
+    data,
+  }));
+
+  return sections;
+};
+
+
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    marginTop: 32,
-    backgroundColor: '#eafffe',
+    //flex: 1,
+    backgroundColor: '#f5f5f5',
   },
-  itemStyle: {
-    padding: 20,
-    fontSize: 16,
-    color: 'black', // Adjust as needed
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 2,
-    backgroundColor: 'white',
+  taskTitle: {
+    backgroundColor: '#ffffff',
+    fontSize: 24,
+    fontWeight: 'bold',
+    padding: 15,
+    elevation: 4,
+    margin: 10,
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  taskItem: {
+    padding: 15,
+    marginVertical: 8,
+    fontSize: 18,
+    backgroundColor: '#ffffff',
+    elevation: 2,
+    borderRadius: 10,
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+  },
+  itemImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 15,
   },
   separator: {
     height: 0.5,
     width: '100%',
     backgroundColor: '#C8C8C8',
-  },
-  taskItem: {
-    padding: 10,
-    marginVertical: 15,
-    fontSize: 16,
-  },
-  taskTitle: {
-    backgroundColor: '#ffffff',
-    fontSize: 20,
-    fontWeight: 'bold',
-    padding: 10,
-    elevation: 4,
-    margin: 10,
-    marginBottom: 0,
-    borderRadius: 10,
   },
 });
 
