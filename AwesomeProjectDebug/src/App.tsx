@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import HomeScreen from './screens/home/Home';
@@ -9,14 +9,15 @@ import LoginScreen from './screens/login/Login';
 import ProfileScreen from './screens/profile/Profile';
 import TabScreen from './screens/tab/Tabs';
 import ProductsScreen from './screens/products/Products';
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider, MD3LightTheme, adaptNavigationTheme } from 'react-native-paper';
 
 const Stack = createNativeStackNavigator();
+const {LightTheme} = adaptNavigationTheme({reactNavigationLight: DefaultTheme});
 
 function App(): JSX.Element {
   return (
-    <PaperProvider>
-      <NavigationContainer>
+    <PaperProvider theme={MD3LightTheme}>
+      <NavigationContainer theme={LightTheme}>
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
