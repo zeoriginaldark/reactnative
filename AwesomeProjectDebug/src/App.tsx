@@ -9,12 +9,14 @@ import LoginScreen from './screens/login/Login';
 import ProfileScreen from './screens/profile/Profile';
 import TabScreen from './screens/tab/Tabs';
 import ProductsScreen from './screens/products/Products';
+import { PaperProvider } from 'react-native-paper';
 
 const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
   return (
-    <NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -25,13 +27,10 @@ function App(): JSX.Element {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Tabs" component={TabScreen} />
-        {/* <Stack.Screen
-            name="Product Details"
-            component={ProductDetailsScreen}
-          /> */}
         <Stack.Screen name="Products" component={ProductsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+    </PaperProvider>
   );
 }
 
