@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { RefreshControl } from 'react-native-gesture-handler';
 
 const applyOffsetLimit = (data, offset, limit) => {
   return data.slice(offset, offset+limit);
@@ -24,7 +25,7 @@ function ProductsScreen() {
   const [page, setPage] = useState(1);
 
   const offset = 0;
-  const limit = 10;
+  const limit = 30;
 
   useEffect(() => {
     fetchData();
@@ -33,19 +34,24 @@ function ProductsScreen() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      // const responsed = await axios.get('http://172.18.19.140:8044/api/Product/GetFood?offset=0&limit=10');
-      // const responsed = await axios.get(`http://172.18.19.140:8044/api/Product/GetFoodCategory?offset=${(page - 1) * 10}&limit=10`);
-      const responsed = require('./food.json');
-      const response = applyOffsetLimit(responsed, offset, limit);
+      //const foodResponse = await axios.get('http://172.18.19.123:8044/api/Product/GetFood?offset=0&limit=10');
+      //const categoryResponse = await axios.get('http://172.18.19.123:8044/api/Product/GetFoodCategory?offset=0&limit=10');
 
-      const newData = response;
+      const prodResponsed = require('./prod.json');
+      const prodResponse = applyOffsetLimit(prodResponsed, offset, limit);
+      // const newData = response.map;
+      // const categories = categoryResponse.data;
+      const newData = prodResponse;
       if (newData.length === 0) {
         // No more data available
         console.log('No more data available.');
         return;
       }
-      console.log('API Response:', response);
+      // console.log('API Response:', response);
+      console.log('Product API Response:', prodResponse);
+      //console.log('Category API Response:', categoryResponse.data);
 
+      // const transformedSections = transformData(newData, categories);
       const transformedSections = transformData(newData);
       console.log('Transformed Sections:', transformedSections);
       setSections(transformedSections);
@@ -61,7 +67,7 @@ function ProductsScreen() {
 
   const renderSectionHeader = ({ section: { title } }) => (
     <View>
-      <Text style={styles.taskTitle}>{title}</Text>
+      <Text style={styles.taskTitle}>{title.charAt(0).toUpperCase() + title.slice(1)}</Text>
     </View>
   );
 
@@ -71,14 +77,15 @@ function ProductsScreen() {
     );
   };
 
-  const renderItem = ({ item: { foodName, description, price } }) => (
+  const renderItem = ({ item: { tname, discountPercentage, description, price, thumbnail } }) => (
     <View style={styles.itemContainer}>
           <View style={styles.itemContainer}>
-            {/* <Image source={{ uri: imagePath }} style={styles.itemImage} /> */}
+            <Image source={{uri: thumbnail}} style={styles.itemImage} />
             <View>
-              <Text>{foodName}</Text>
+              <Text>{tname}</Text>
               <Text>{description}</Text>
               <Text>${price}</Text>
+              <Text>{discountPercentage}% disc</Text>
             </View>
           </View>
     </View>
@@ -99,7 +106,7 @@ function ProductsScreen() {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
+  
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -112,7 +119,7 @@ function ProductsScreen() {
         ) : (
           <SectionList
             sections={sections}
-            keyExtractor={(item, index) => item.foodId.toString() + index.toString()}
+            keyExtractor={(item, index) => item.id.toString() + index.toString()}
             renderSectionHeader={renderSectionHeader}
             ItemSeparatorComponent={ItemSeparatorView}
             ListFooterComponent={renderFooter}
@@ -131,12 +138,39 @@ function ProductsScreen() {
   );
 }
 
+// const transformData = (data, categories) => {
+//   const groupedData = data.reduce((acc, item) => {
+//     const category = item.categoryName || 'Uncategorized';
+//     if (!acc[category]) {
+//       acc[category] = [];
+//     }
+
+//     acc[category].push(item);
+//     return acc;
+//   }, {});
+
+//   categories.forEach(category => {
+//     const categoryName = category.categoryName;
+//     if (!groupedData[categoryName]) {
+//       groupedData[categoryName] = [];
+//     }
+//   });
+
+//   const sections = Object.entries(groupedData).map(([title, data]) => ({
+//     title,
+//     data,
+//   }));
+
+//   return sections;
+// }; 
+
 const transformData = (data) => {
   const groupedData = data.reduce((acc, item) => {
-    const category = item.categoryName || 'Uncategorized';
+    const category = item.category || 'Uncategorized';
     if (!acc[category]) {
       acc[category] = [];
     }
+
     acc[category].push(item);
     return acc;
   }, {});

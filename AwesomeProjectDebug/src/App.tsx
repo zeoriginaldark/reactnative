@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import HomeScreen from './screens/home/Home';
 import RegisterScreen from './screens/register/Register';
@@ -11,26 +11,22 @@ import TabScreen from './screens/tab/Tabs';
 import ProductsScreen from './screens/products/Products';
 import { PaperProvider, MD3LightTheme, adaptNavigationTheme } from 'react-native-paper';
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 const {LightTheme} = adaptNavigationTheme({reactNavigationLight: DefaultTheme});
 
 function App(): JSX.Element {
   return (
     <PaperProvider theme={MD3LightTheme}>
       <NavigationContainer theme={LightTheme}>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Tabs" component={TabScreen} />
-        <Stack.Screen name="Products" component={ProductsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+        <Drawer.Navigator initialRouteName="Home">
+          <Drawer.Screen name="Home" component={HomeScreen} />
+          <Drawer.Screen name="Register" component={RegisterScreen} />
+          <Drawer.Screen name="Login" component={LoginScreen} />
+          <Drawer.Screen name="Profile" component={ProfileScreen} />
+          <Drawer.Screen name="Tabs" component={TabScreen} />
+          <Drawer.Screen name="Products" component={ProductsScreen} />
+        </Drawer.Navigator>
+      </NavigationContainer>
     </PaperProvider>
   );
 }
