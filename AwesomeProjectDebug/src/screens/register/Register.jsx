@@ -82,20 +82,22 @@ function RegisterScreen() {
               <Text style={styles.header}>Sign Up</Text>
             )}
           </View>
-          <TextInput
-            style={styles.input}
-            placeholder="First Name"
-            value={firstName}
-            onChangeText={text => setFirstName(text)}
-            editable={!isLoading}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Last Name"
-            value={lastName}
-            onChangeText={text => setLastName(text)}
-            editable={!isLoading}
-          />
+          <View style={{flexDirection:'row'}}>
+            <TextInput
+              style={[styles.inputhalf, {marginRight: 5}]}
+              placeholder="First Name"
+              value={firstName}
+              onChangeText={text => setFirstName(text)}
+              editable={!isLoading}
+            />
+            <TextInput
+              style={[styles.inputhalf, {marginLeft: 5}]}
+              placeholder="Last Name"
+              value={lastName}
+              onChangeText={text => setLastName(text)}
+              editable={!isLoading}
+            />
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -161,6 +163,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
+  },
+  inputhalf: {
+    height: 40,
+    width: '100%',
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    flex: 1
   },
   button: {
     backgroundColor: 'blue',
