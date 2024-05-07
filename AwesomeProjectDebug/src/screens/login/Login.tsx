@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -12,13 +12,16 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { AuthContext } from '../../context/AuthContext';
 
 function LoginScreen(): JSX.Element {
+  const {login} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignUp = () => {
     console.log('Logging in:', {email, password});
+    login();
   };
 
   const isDarkMode = useColorScheme() === 'dark';
