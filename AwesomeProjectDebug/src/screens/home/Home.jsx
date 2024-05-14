@@ -35,18 +35,6 @@ function HomeScreen(){
           <View style={styles.buttoncontainer}>
             <TouchableOpacity
               style={styles.button}
-              title="Register"
-              onPress={() => navigation.navigate('Register')}>
-              <Text style={styles.buttonText}>Register</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              title="Login"
-              onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
               title="Profile"
               onPress={() => navigation.navigate('Profile')}>
               <Text style={styles.buttonText}>Profile</Text>

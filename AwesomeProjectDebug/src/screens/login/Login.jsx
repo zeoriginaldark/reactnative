@@ -11,17 +11,22 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import {useNavigation} from '@react-navigation/native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import { AuthContext } from '../../context/AuthContext';
 
-function LoginScreen(): JSX.Element {
+function LoginScreen(){
+  const navigation = useNavigation();
   const {login} = useContext(AuthContext);
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [deviceType] = useState('string');
+  const [deviceID] = useState('string');
+
 
   const handleSignUp = () => {
-    console.log('Logging in:', {email, password});
-    login();
+    console.log('Logging in:', {username, password});
+    login(username, password, deviceType, deviceID);
   };
 
   const isDarkMode = useColorScheme() === 'dark';
@@ -43,9 +48,9 @@ function LoginScreen(): JSX.Element {
           <Text style={styles.header}>Sign In</Text>
           <TextInput
             style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={text => setEmail(text)}
+            placeholder="Username/Email"
+            value={username}
+            onChangeText={text => setUsername(text)}
             keyboardType="email-address"
             autoCapitalize="none"
           />
@@ -61,6 +66,11 @@ function LoginScreen(): JSX.Element {
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.ForgotText}>Forgot password?</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.ForgotText}>New? Register</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

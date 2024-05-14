@@ -1,5 +1,5 @@
 /* eslint-disable no-alert */
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import axios from 'axios';
 import {
   SafeAreaView,
@@ -11,52 +11,27 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { AuthContext } from '../../context/AuthContext';
 
 const baseUrl = 'https://reqres.in';
 
 function RegisterScreen() {
   const navigation = useNavigation();
-
+  const {register} = useContext(AuthContext);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
   const handleSignUp = async () => {
     console.log('Signing up:', {firstName, lastName, email, password});
-    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
-      alert('Name or Email is invalid');
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const response = await axios.post(`${baseUrl}/api/users`, {
-        firstName,
-        lastName,
-        email,
-      });
-
-      if (response.status === 201) {
-        alert(` You have created: ${JSON.stringify(response.data)}`);
-        setIsLoading(false);
-        setFirstName('');
-        setLastName('');
-        setEmail('');
-        setPassword('');
-      } else {
-        throw new Error('An error has occurred');
-      }
-    } catch (error) {
-      alert('An error has occurred');
-      setIsLoading(false);
-    }
+    register(firstName, lastName, email, password);
   };
 
   const isDarkMode = useColorScheme() === 'dark';
