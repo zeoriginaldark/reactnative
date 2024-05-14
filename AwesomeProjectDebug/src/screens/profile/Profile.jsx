@@ -4,21 +4,16 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  // useColorScheme,
   SafeAreaView,
   ScrollView,
   StatusBar,
   Image,
   ImageBackground,
-  // Platform,
-  // Constants,
   Dimensions,
   Linking,
 } from 'react-native';
-// import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 function ProfileScreen() {
-  // const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     flex: 1,
     backgroundColor: 'transparent',
@@ -35,7 +30,7 @@ function ProfileScreen() {
   };
 
   const handleButtonPressPnt = () => {
-    Linking.openURL('https://twitter.com'); // Replace with your Twitter URL
+    Linking.openURL('https://pinterest.com'); // Replace with your Twitter URL
   };
 
   return (

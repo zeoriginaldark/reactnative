@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import HomeScreen from '../screens/home/Home';
 import RegisterScreen from '../screens/register/Register';
@@ -10,18 +10,19 @@ import ProfileScreen from '../screens/profile/Profile';
 import TabScreen from '../screens/tab/Tabs';
 import ProductsScreen from '../screens/products/Products';
 import { PaperProvider, MD3LightTheme, adaptNavigationTheme } from 'react-native-paper';
+import { Login } from '@mui/icons-material';
 
-const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 const {LightTheme} = adaptNavigationTheme({reactNavigationLight: DefaultTheme});
 
 function AuthStack(): JSX.Element {
   return (
     <PaperProvider theme={MD3LightTheme}>
         <NavigationContainer theme={LightTheme}>
-            <Drawer.Navigator initialRouteName="Login">
-            <Drawer.Screen name="Login" component={LoginScreen} />
-            <Drawer.Screen name="Register" component={RegisterScreen} />
-            </Drawer.Navigator>
+            <Stack.Navigator initialRouteName='Login'>
+                <Stack.Screen name='Login' component={LoginScreen}></Stack.Screen>
+                <Stack.Screen name='Register' component={RegisterScreen}></Stack.Screen>
+            </Stack.Navigator>
         </NavigationContainer>
     </PaperProvider>
   );

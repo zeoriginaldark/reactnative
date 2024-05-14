@@ -53,7 +53,7 @@ function ProductsScreen() {
 
       // const transformedSections = transformData(newData, categories);
       const transformedSections = transformData(newData);
-      console.log('Transformed Sections:', transformedSections);
+      // console.log('Transformed Sections:', transformedSections);
       setSections(transformedSections);
 
       // setSections(prevSections => [...prevSections, ...transformedSections]);
