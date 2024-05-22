@@ -18,8 +18,6 @@ import {useNavigation} from '@react-navigation/native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import { AuthContext } from '../../context/AuthContext';
 
-const baseUrl = 'https://reqres.in';
-
 function RegisterScreen() {
   const navigation = useNavigation();
   const {register} = useContext(AuthContext);
