@@ -10,7 +10,6 @@ import ProfileScreen from '../screens/profile/Profile';
 import TabScreen from '../screens/tab/Tabs';
 import ProductsScreen from '../screens/products/Products';
 import { PaperProvider, MD3LightTheme, adaptNavigationTheme } from 'react-native-paper';
-import { Login } from '@mui/icons-material';
 
 const Stack = createNativeStackNavigator();
 const {LightTheme} = adaptNavigationTheme({reactNavigationLight: DefaultTheme});

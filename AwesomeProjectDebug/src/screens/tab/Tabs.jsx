@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from '@mui/icons-material';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +40,7 @@ const TabBarIcon = ({route, focused, color, size}) => {
     iconName = focused ? 'face' : 'face-outline';
   }
 
-  return <Icon name={iconName} size={size} color={color} />;
+  return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
 };
 
 function TabScreen() {
