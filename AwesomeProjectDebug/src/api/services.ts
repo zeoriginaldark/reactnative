@@ -15,7 +15,7 @@ const AuthService = {
         }
       );
       if (response.status === 200) {
-        return response.data.accessToken;
+        return response.data;
       } else {
         throw new Error('An error has occurred');
       }

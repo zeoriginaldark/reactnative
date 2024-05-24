@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -13,6 +13,8 @@ import {
   Linking,
 } from 'react-native';
 
+import { AuthContext } from '../../context/AuthContext';
+
 function ProfileScreen() {
   const backgroundStyle = {
     flex: 1,
@@ -20,6 +22,8 @@ function ProfileScreen() {
   };
 
   const [isFollowed, setIsFollowed] = useState(false);
+
+  const {userInfo} = useContext(AuthContext);
 
   const handleButtonPress = () => {
     setIsFollowed(!isFollowed);
@@ -53,7 +57,7 @@ function ProfileScreen() {
                   style={styles.smallLogo}
                 />
               </View>
-              <Text style={styles.header}>Mr. Bombastic</Text>
+              <Text style={styles.header}>{userInfo.profile.fullName}</Text>
             </View>
           </ImageBackground>
           <View style={styles.buttoncontainer}>
@@ -95,20 +99,20 @@ function ProfileScreen() {
             <Text style={styles.headerb}>About Me</Text>
           </View>
           <View style={styles.straycontainer}>
-            <Text>Sire Bombastic is a distinguished gentleman.</Text>
-            <Text>Sire Bombastic is a distinguished gentleman.</Text>
+            <Text>Sire {userInfo.profile.firstName} is a distinguished gentleman.</Text>
+            <Text>Sire {userInfo.profile.firstName} is a distinguished gentleman.</Text>
           </View>
           <View style={styles.straycontainer}>
-            <Text>Sire Bombastic is a distinguished gentleman.</Text>
-            <Text>Sire Bombastic is a distinguished gentleman.</Text>
+            <Text>Sire {userInfo.profile.firstName} is a distinguished gentleman.</Text>
+            <Text>Sire {userInfo.profile.firstName} is a distinguished gentleman.</Text>
           </View>
           <View style={styles.straycontainer}>
-            <Text>Sire Bombastic is a distinguished gentleman.</Text>
-            <Text>Sire Bombastic is a distinguished gentleman.</Text>
+            <Text>Sire {userInfo.profile.firstName} is a distinguished gentleman.</Text>
+            <Text>Sire {userInfo.profile.firstName} is a distinguished gentleman.</Text>
           </View>
           <View style={styles.straycontainer}>
-            <Text>Sire Bombastic is a distinguished gentleman.</Text>
-            <Text>Sire Bombastic is a distinguished gentleman.</Text>
+            <Text>Sire {userInfo.profile.firstName} is a distinguished gentleman.</Text>
+            <Text>Sire {userInfo.profile.firstName} is a distinguished gentleman.</Text>
           </View>
         </View>
       </ScrollView>
