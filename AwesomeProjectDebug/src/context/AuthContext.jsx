@@ -7,13 +7,16 @@ export const AuthContext = createContext();
 const AuthProvider = ({children}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [userToken, setUserToken] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
     
     const login = async (username, password, deviceType, deviceID) => {
         setIsLoading(true);
         try {
-          const token = await AuthService.login(username, password, deviceType, deviceID);
-          setUserToken(token);
-          AsyncStorage.setItem('userToken', userToken);
+          let userInfo = await AuthService.login(username, password, deviceType, deviceID);
+          setUserInfo(userInfo);
+          setUserToken(userInfo.accessToken);
+          AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+          AsyncStorage.setItem('userToken', userInfo.accessToken);
         } catch (error) {
             throw error;
         }
@@ -23,15 +26,21 @@ const AuthProvider = ({children}) => {
     const logout = () =>{
         setIsLoading(true);
         setUserToken(null);
+        AsyncStorage.removeItem('userInfo');
         AsyncStorage.removeItem('userToken');
         setIsLoading(false);
     }
 
-    const isLoggedIn = () =>{
+    const isLoggedIn = async() =>{
         try {
             setIsLoading(true);
-            let userToken = AsyncStorage.getItem('userToken');
-            setUserToken(userToken);
+            let userInfo = await AsyncStorage.getItem('userInfo');
+            let userToken = await AsyncStorage.getItem('userToken');
+            userInfo = JSON.parse(userInfo);
+            if (userInfo){
+                setUserToken(userToken);
+                setUserInfo(userInfo);
+            }
             setIsLoading(false);
         } catch (error) {
             console.log(`isLogged in error: ${error}`)
@@ -54,7 +63,7 @@ const AuthProvider = ({children}) => {
     };
 
     return(
-    <AuthContext.Provider value={{login, logout, register, isLoading, userToken}}>
+    <AuthContext.Provider value={{login, logout, register, isLoading, userToken, userInfo}}>
         {children}
     </AuthContext.Provider>
 );

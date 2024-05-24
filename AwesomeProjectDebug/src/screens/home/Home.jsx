@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -11,10 +11,13 @@ import {
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {useNavigation} from '@react-navigation/native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { AuthContext } from '../../context/AuthContext';
 
 function HomeScreen(){
   const navigation = useNavigation();
+
+  const {userInfo} = useContext(AuthContext);
 
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
@@ -31,7 +34,7 @@ function HomeScreen(){
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <View style={styles.container}>
-          <Text style={styles.header}>Navigation Pane</Text>
+          <Text style={styles.header}>Hello {userInfo.profile.firstName}!</Text>
           <View style={styles.buttoncontainer}>
             <TouchableOpacity
               style={styles.button}
