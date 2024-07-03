@@ -27,6 +27,9 @@ function ProfileScreen() {
 
   const handleButtonPress = () => {
     setIsFollowed(!isFollowed);
+    userFL = userInfo.profile.fullName;
+    followStatus = isFollowed ? 'unfollowed' : 'followed'
+    console.log(userFL, 'was', followStatus)
   };
 
   const handleButtonPressTwt = () => {
