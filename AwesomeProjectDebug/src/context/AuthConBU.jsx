@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { login, logout } from '../redux/actions/authAct';
+import { login, logout } from '../redux/reducers/authRed';
 import store from '../redux/store';
 
 export const AuthContext = React.createContext();
 
 const AuthProvider = ({ children }) => {
     const dispatch = useDispatch();
-    const { isLoading, userToken, userInfo } = useSelector(state => state);
+    const { isLoading, userToken, userInfo } = useSelector(state => state.auth);
 
     const handleLogin = async (username, password, deviceType, deviceID) => {
         dispatch(login(username, password, deviceType, deviceID));
